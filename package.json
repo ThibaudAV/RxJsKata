@@ -2,7 +2,7 @@
   "name": "rx-js-kata",
   "title": "Kata for RxJS",
   "description": "A kata on RxJS that should get you up to speed with test schedulers",
-  "version":"0.0.1",
+  "version": "0.0.1",
   "maintainers": [
     {
       "name": "Alexandre Victoor",
@@ -22,12 +22,25 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   ],
+  "scripts": {
+    "prettier": "prettier --write '**/*.{ts,js,md,json}'",
+    "test": "mocha --ui mocha-qunit-ui -b"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "arrowParens": "avoid"
+  },
   "dependencies": {
     "mocha": "*",
     "mocha-qunit-ui": "*",
     "rx": "*"
   },
-  "scripts": {
-    "test": "mocha --ui mocha-qunit-ui -b"
+  "devDependencies": {
+    "prettier": "1.16.4"
   }
 }

@@ -1,10 +1,9 @@
 var Rx = require('rx'),
-    Observable = Rx.Observable,
-    Subject = Rx.Subject,
-    AsyncSubject = Rx.AsyncSubject,
-    ReplaySubject = Rx.ReplaySubject,
-    TestScheduler = Rx.TestScheduler;
-
+  Observable = Rx.Observable,
+  Subject = Rx.Subject,
+  AsyncSubject = Rx.AsyncSubject,
+  ReplaySubject = Rx.ReplaySubject,
+  TestScheduler = Rx.TestScheduler;
 
 QUnit.module('Time is money');
 
@@ -13,20 +12,17 @@ var onNext = Rx.ReactiveTest.onNext,
   onCompleted = Rx.ReactiveTest.onCompleted,
   subscribe = Rx.ReactiveTest.subscribe;
 
-
 var createMidPrices = function(source) {
-  return source.map(
-    function(p) {
-      return (p.bid + p.ask)/2;
-    });
-}
-
+  return source.map(function(p) {
+    return (p.bid + p.ask) / 2;
+  });
+};
 
 test('should get mid prices', function() {
   var scheduler = new TestScheduler();
   var source = scheduler.createHotObservable(
-    onNext(1, {bid: 42, ask:44}),
-    onNext(2, {bid: 44, ask:46})
+    onNext(1, { bid: 42, ask: 44 }),
+    onNext(2, { bid: 44, ask: 46 }),
   );
   var stream = createMidPrices(source, scheduler);
   var mockObserver = scheduler.createObserver();
@@ -36,7 +32,7 @@ test('should get mid prices', function() {
 
   collectionAssert.assertEqual(mockObserver.messages, [
     onNext(1, 43),
-    onNext(2, 45)
+    onNext(2, 45),
   ]);
 });
 
@@ -46,15 +42,15 @@ var createLastDaysAvgMidPrices = function(source, nbDays, scheduler) {
     .flatMap(function(w) {
       return w.average();
     });
-}
+};
 
 test('should get last X  mid avg prices', function() {
   var scheduler = new TestScheduler();
   var source = scheduler.createHotObservable(
-    onNext(1, {bid: 42, ask:44}),
-    onNext(2, {bid: 44, ask:46}),
-    onNext(5, {bid: 43, ask:45}),
-    onNext(7, {bid: 45, ask:47})
+    onNext(1, { bid: 42, ask: 44 }),
+    onNext(2, { bid: 44, ask: 46 }),
+    onNext(5, { bid: 43, ask: 45 }),
+    onNext(7, { bid: 45, ask: 47 }),
   );
   var stream = createLastDaysAvgMidPrices(source, 3, scheduler);
   var mockObserver = scheduler.createObserver();
@@ -64,28 +60,38 @@ test('should get last X  mid avg prices', function() {
 
   collectionAssert.assertEqual(mockObserver.messages, [
     onNext(5, 44),
-    onNext(7, 45)
+    onNext(7, 45),
   ]);
 });
 
-
-
-
 function createMessage(expected, actual) {
-  return 'Expected: [' + expected.toString() + ']\r\nActual: [' + actual.toString() + ']';
+  return (
+    'Expected: [' +
+    expected.toString() +
+    ']\r\nActual: [' +
+    actual.toString() +
+    ']'
+  );
 }
 
 // Using QUnit testing for assertions
 var collectionAssert = {
-  assertEqual: function (actual, expected) {
-    var comparer = Rx.internals.isEqual, isOk = true;
+  assertEqual: function(actual, expected) {
+    var comparer = Rx.internals.isEqual,
+      isOk = true;
 
     if (expected.length !== actual.length) {
-      ok(false, 'Not equal length. Expected: ' + expected.length + ' Actual: ' + actual.length);
+      ok(
+        false,
+        'Not equal length. Expected: ' +
+          expected.length +
+          ' Actual: ' +
+          actual.length,
+      );
       return;
     }
 
-    for(var i = 0, len = expected.length; i < len; i++) {
+    for (var i = 0, len = expected.length; i < len; i++) {
       isOk = comparer(expected[i], actual[i]);
       if (!isOk) {
         break;
@@ -93,7 +99,5 @@ var collectionAssert = {
     }
 
     ok(isOk, createMessage(expected, actual));
-  }
+  },
 };
-
-
