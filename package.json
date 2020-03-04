@@ -23,8 +23,9 @@
     }
   ],
   "scripts": {
+    "build": "tsc",
     "prettier": "prettier --write '**/*.{ts,js,md,json}'",
-    "test": "mocha --ui mocha-qunit-ui -b"
+    "test": "mocha -r ts-node/register --ui mocha-qunit-ui -b"
   },
   "prettier": {
     "printWidth": 80,
@@ -41,6 +42,10 @@
     "rx": "*"
   },
   "devDependencies": {
-    "prettier": "1.16.4"
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.9.4",
+    "prettier": "1.16.4",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.3"
   }
 }
